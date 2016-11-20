@@ -1,0 +1,761 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ansible," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！。ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Ansible来做自动化(一)：开始第一个Ansible例子">
+<meta property="og:url" content="http://yoursite.com/2016/11/20/ansible-first/index.html">
+<meta property="og:site_name" content="meedrop">
+<meta property="og:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！。ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
+<meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-command.png">
+<meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-vvv.png">
+<meta property="og:updated_time" content="2016-11-20T07:26:15.573Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Ansible来做自动化(一)：开始第一个Ansible例子">
+<meta name="twitter:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！。ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta name="twitter:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/20/ansible-first/"/>
+
+
+  <title> 用Ansible来做自动化(一)：开始第一个Ansible例子 | meedrop </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?27c6eb5bab0f7bb4b03be960b7e141b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">meedrop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-search">
+          <a href="/search" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-search"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                用Ansible来做自动化(一)：开始第一个Ansible例子
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-20T15:13:01+08:00" content="2016-11-20">
+              2016-11-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ansible/" itemprop="url" rel="index">
+                    <span itemprop="name">ansible</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/20/ansible-first/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/20/ansible-first/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会<code>乱！</code>。<code>ansible</code>很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。<br><a id="more"></a></p>
+<h2 id="1-为什么选择Ansible"><a href="#1-为什么选择Ansible" class="headerlink" title="1. 为什么选择Ansible"></a>1. 为什么选择Ansible</h2><p><code>ansible</code>定位为一个<code>配置管理工具</code>，和<code>puppet</code>,<code>saltstack</code>是同类型的工具，关于这三个工具的对比，已经有很多文章描述了，自行谷歌一下，至于我选择ansible的原因，只有以下这一点：</p>
+<blockquote>
+<p>简单</p>
+</blockquote>
+<p>如果你的服务器规模没有特别大（小于500台），那么ansible绝对是你最好的选择！</p>
+<h2 id="2-幂等性"><a href="#2-幂等性" class="headerlink" title="2. 幂等性"></a>2. 幂等性</h2><p>开始往下写ansible之前，要讲一个很重要的东西：<code>幂等性</code>。贴一下百科对幂等性的解释：</p>
+<blockquote>
+<p>在编程中，一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。</p>
+</blockquote>
+<p>如果用到shell中解释的话，就是执行一条命令和执行多次这条命令的影响是相同的。下面有个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 往/etc/hosts文件里增加一行解析</span></div><div class="line">echo <span class="string">"10.0.0.1 test.ansible.com "</span> &gt;&gt; /etc/hosts</div><div class="line"><span class="comment"># 执行后/etc/hosts内容如下：</span></div><div class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.1</span> test.ansible.com</div><div class="line"></div><div class="line"><span class="comment"># 再执行一次命令：</span></div><div class="line">echo <span class="string">"10.0.0.1 test.ansible.com "</span> &gt;&gt; /etc/hosts</div><div class="line"><span class="comment"># 执行后/etc/hosts内容如下：</span></div><div class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.1</span> test.ansible.com</div><div class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.1</span> test.ansible.com</div></pre></td></tr></table></figure></p>
+<p>可以看到上边的例子第二次执行命令不是我们想要的结果，<code>/etc/hosts</code>里多余了一条解析，执行命令的结果不满足幂等性。为了满足幂等性，我们可以把命令加工一下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在写入/etc/hosts文件前进行一次判断</span></div><div class="line">RETVAL=$(cat /etc/hosts | grep -c <span class="string">'10.0.0.1 test.ansible.com'</span>)</div><div class="line"><span class="keyword">if</span> [ $RETVAL == <span class="number">0</span> ]；then</div><div class="line">    echo <span class="string">"10.0.0.1 test.ansible.com "</span> &gt;&gt; /etc/hosts</div><div class="line">fi</div></pre></td></tr></table></figure></p>
+<p>虽然上述的方案解决了问题，但是如果任务需要执行的命令多达百条，你估计要写100个if语句了，将会非常麻烦。而ansbile所有模块都是幂等性的，使用ansible来完成你的任务将会变得非常简单，将上面例子用ansible来实现：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible host -m lineinfile -a <span class="string">"dest=/etc/hosts line='10.0.0.1 test.ansible.com'"</span></div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>简单解析一下上面命令的意思，如果看不懂没关系^_^，下文会继续深入讨论ansible的使用<br><code>host</code>: 这是指定你要执行的主机<br><code>-m</code>: module模块的意思，指定要使用什么模块<br><code>lineinfile</code>: 一个ansible内置模块，看字面上的意思就是一个实现文本操作模块<br><code>-a</code>: 就是args，指定模块要使用的参数<br><code>dest</code>： lineinfile模块的参数，指定要远程文件是什么<br><code>line</code>:  lineinfile模块的参数，行操作，我的例子里是添加行</p>
+</blockquote>
+<p>这个命令无论执行多少次，/etc/hosts/里面永远只有一条解析。是不是很方便呢^_^</p>
+<h2 id="3-选择Ansible的版本"><a href="#3-选择Ansible的版本" class="headerlink" title="3. 选择Ansible的版本"></a>3. 选择Ansible的版本</h2><p>现在<code>ansible</code>的主流版本主要有<code>1.x</code>和<code>2.x</code>版本，选择哪个版本都ok，不过我的建议是直接上2.x的版本吧，我用1.x版本遇到了一些莫名其妙的坑，无论如何都解决不了，最终升级2.x才解决了问题。<br>另外有一点要注意的是：ansible 2.x 版本命令模式执行速度慢，比起1.x要慢很多，不过这是正常的，一开始我一直以为是自己安装出了问题，排查了好久才找到答案。<br>相对的，虽然命令执行速度慢了，但2.x跑playbook要比1.x快很多。</p>
+<h2 id="4-开始第一个Ansible例子"><a href="#4-开始第一个Ansible例子" class="headerlink" title="4. 开始第一个Ansible例子"></a>4. 开始第一个Ansible例子</h2><h3 id="4-1-Ansible原理及实验拓扑"><a href="#4-1-Ansible原理及实验拓扑" class="headerlink" title="4.1. Ansible原理及实验拓扑"></a>4.1. Ansible原理及实验拓扑</h3><p>ansible的原理非常简单：<code>通过ssh登录到(1台或多台)远程主机执行命令</code><br>接下来会基于下图拓扑，开始讲解ansible的例子<br><img src="http://ofus5xwey.bkt.clouddn.com/ansible1.png" alt=" "></p>
+<p>主机列表：<code>下面我只列出了被管理主机列表，ansbile管理主机的信息暂时使用不到，不列出混淆</code></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">主机名</th>
+<th style="text-align:center">IP</th>
+<th style="text-align:center">SSH端口</th>
+<th style="text-align:center">远程用户</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">foo1</td>
+<td style="text-align:center">192.168.125.11</td>
+<td style="text-align:center">12222</td>
+<td style="text-align:center">bar</td>
+</tr>
+<tr>
+<td style="text-align:center">foo2</td>
+<td style="text-align:center">192.168.125.21</td>
+<td style="text-align:center">12222</td>
+<td style="text-align:center">bar</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-2-安装Ansible"><a href="#4-2-安装Ansible" class="headerlink" title="4.2. 安装Ansible"></a>4.2. 安装Ansible</h3><p>安装基于centos6系统，如果你不是和我一样的系统，可以参考一下官方的安装文档：<br><a href="http://docs.ansible.com/ansible/intro_installation.html" target="_blank" rel="external">ansible官方文档</a><br><a href="http://ansible-tran.readthedocs.io/en/latest/docs/intro_installation.html" target="_blank" rel="external">ansible中文翻译文档</a></p>
+<ul>
+<li><p>添加阿里云的镜像源</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget http://mirrors.aliyun.com/epel/epel-release-latest<span class="number">-6.</span>noarch.rpm</div><div class="line">rpm -ivh epel-release-latest<span class="number">-6.</span>noarch.rpm</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装ansible</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 目前稳定的最新版本是2.1.2</span></div><div class="line">yum install ansible</div><div class="line"></div><div class="line">Dependencies Resolved</div><div class="line">===========================================================================================================================================</div><div class="line"> Package                         Arch                           Version                                 Repository                    Size</div><div class="line">===========================================================================================================================================</div><div class="line">Installing:</div><div class="line"> ansible                         noarch                         <span class="number">2.1</span><span class="number">.2</span><span class="number">.0</span><span class="number">-1.</span>el6                           epel                         <span class="number">3.5</span> M</div><div class="line"></div><div class="line">Transaction Summary</div><div class="line">===========================================================================================================================================</div></pre></td></tr></table></figure>
+</li>
+<li><p>检查一下是否安装成功</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ansible --version</div><div class="line"><span class="comment"># 像这样的返回就是安装成功了</span></div><div class="line">ansible <span class="number">2.1</span><span class="number">.2</span><span class="number">.0</span></div><div class="line">  config file = /etc/ansible/ansible.cfg</div><div class="line">  configured module search path = Default w/o overrides</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="4-3-执行第一条ansible命令吧"><a href="#4-3-执行第一条ansible命令吧" class="headerlink" title="4.3. 执行第一条ansible命令吧"></a>4.3. 执行第一条ansible命令吧</h3><ul>
+<li><p>首先什么都不要管，创建一个实验目录<code>/tmp/ansible</code>，在里面开始我们第一个实验：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir /tmp/ansible</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个host文件，叫什么名字都行，我的取名叫<code>MyRemoteHosts</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cd /tmp/ansible</div><div class="line">vim MyRemoteHosts</div><div class="line"><span class="comment"># 写入我要控制的两台主机信息</span></div><div class="line">[foo]</div><div class="line">foo1 ansible_ssh_port=<span class="number">12222</span> ansible_ssh_host=<span class="number">192.168</span><span class="number">.125</span><span class="number">.11</span></div><div class="line">foo2 ansible_ssh_port=<span class="number">12222</span> ansible_ssh_host=<span class="number">192.168</span><span class="number">.125</span><span class="number">.21</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p><code>[foo]</code>: 指的是foo这个组，下面的foo1,foo2都是组里的主机<br><code>ansible_ssh_port</code>: 远程主机的SSH端口，不指定默认使用22端口<br><code>ansible_ssh_host</code>: 远程主机的IP地址，如果这里没有指定，/etc/hosts里必须要有这条解析</p>
+<p>在生产环境中，一般来说是不会使用默认22端口的，所以这个例子更加贴近生产环境，让你少走弯路。<br>ansible只能通过主机名的方式来控制远程主机，不能直接通过IP地址来访问，所以要有<code>host--&gt;ip</code>的解析</p>
+</blockquote>
+<ul>
+<li><p>把远程主机的时间都打印出来看看，在ansible管理主机上执行：<br><code>ansible -i MyRemoteHosts foo -u bar -m shell -a &quot;date&quot; -k</code><br>输出结果：<br><img src="http://ofus5xwey.bkt.clouddn.com/ansible-first-command.png" alt=" "></p>
+</li>
+<li><p>在命令后面增加-vvv来观察一下ansible的详细执行流程<br><img src="http://ofus5xwey.bkt.clouddn.com/ansible-first-vvv.png" alt=" "><br><em>可以看到其实ansible先把要执行的命令写到本地的一个文件里，然后把文件发送到远程主机的一个目录下，然后执行，再删掉临时文件</em></p>
+</li>
+</ul>
+<blockquote>
+<p>解析一下上面命令行的含义<br><code>-i</code>: 指定hosts文件的路径，如果没有指定默认会使用/etc/ansible/hosts。在指定的host文件后面，写的是主机组，或者主机名<br><code>-u</code>: 指定远程主机运行命令的用户，如果没有指定，ansible主机当前用户运行。<br><code>-m</code>: module模块的意思，指定要使用什么模块<br><code>shell</code>: 使用shell这个内置模块，就像在远程主机的shell下执行命令一样<br><code>-a</code>: 就是args，指定模块要使用的参数<br><code>-k</code>: 指定输入远程主机的ssh密码。ansible默认会认为你和远端主机已建立了互信，如果已经建立了ssh互信可以不使用这个参数。有的情况我们需要执行一次性操作，并不要建立ssh互信，这个参数就发挥了用途。<br><code>-vvv</code>: 这个参数显示ansible执行的详细过程</p>
+</blockquote>
+<ul>
+<li>除了上面的命令，你还可以这么做，例如对单台主机操作，试试下面的命令会有什么结果吧^_^<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ansible -i MyRemoteHosts foo1 -u bar -m shell -a <span class="string">"date"</span> -k</div><div class="line">ansible -i MyRemoteHosts foo2 -u bar -m shell -a <span class="string">"date"</span> -k</div><div class="line">ansible -i MyRemoteHosts foo1,foo2 -u bar -m shell -a <span class="string">"date"</span> -k</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h2><p>上文中我没有提及<code>inventory</code>，因为我觉得这个叫法会让人觉得难以理解，其实inventory非常简单，它就等价于上文中的host文件<code>MyRemoteHosts</code>。</p>
+<p>还有模块的使用方法，这篇文章里不会写，我觉得那并不是ansible的重点，可以参考这篇文档：<a href="http://http://breezey.blog.51cto.com/2400275/1555530/" target="_blank" rel="external">http://http://breezey.blog.51cto.com/2400275/1555530/</a><br>或者通过<code>ansible-doc 模块名</code>，英文能力好我建议第二种方法。</p>
+<p>会不会觉得ansible的命令会有点长^_^？其实很多的变量可以事先定义好，不过我想让你从底层更清晰的了解ansible的运作方式，稍微弄的复杂了点。简化后的ansible命令可能像这样子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible foo -u bar -m shell -a <span class="string">"date"</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>host</code>文件默认会读<code>/etc/ansible/hosts</code>，解析预先在<code>/etc/hosts</code>里做好</li>
+<li>与远程主机事先添加好互信</li>
+<li>ssh端口可以在配置文件<code>/etc/ansible/ansible.cfg</code>里定义好，就不用在<code>inventory</code>文件在写一次</li>
+</ul>
+<p>好了这篇文章先到这里，现在已经可以使用ansible做一点小任务了^_^，ansible更厉害的东西，请等待下一篇文章：<em>用Ansible来做自动化(二): 简单的不得了的Playbook</em></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ansible/" rel="tag">#ansible</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/30/setup-shadowsocks/" rel="next" title="搭建一个快速稳定的Shadowsocks">
+                <i class="fa fa-chevron-left"></i> 搭建一个快速稳定的Shadowsocks
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/20/ansible-first/"
+           data-title="用Ansible来做自动化(一)：开始第一个Ansible例子" data-url="http://yoursite.com/2016/11/20/ansible-first/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="meedrop" />
+          <p class="site-author-name" itemprop="name">meedrop</p>
+          <p class="site-description motion-element" itemprop="description">一叶落，而知天下秋</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/iraindrop" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-为什么选择Ansible"><span class="nav-number">1.</span> <span class="nav-text">1. 为什么选择Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-幂等性"><span class="nav-number">2.</span> <span class="nav-text">2. 幂等性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-选择Ansible的版本"><span class="nav-number">3.</span> <span class="nav-text">3. 选择Ansible的版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-开始第一个Ansible例子"><span class="nav-number">4.</span> <span class="nav-text">4. 开始第一个Ansible例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-Ansible原理及实验拓扑"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. Ansible原理及实验拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-安装Ansible"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. 安装Ansible</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-执行第一条ansible命令吧"><span class="nav-number">4.3.</span> <span class="nav-text">4.3. 执行第一条ansible命令吧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-小结"><span class="nav-number">5.</span> <span class="nav-text">5. 小结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meedrop</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"meedrop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
