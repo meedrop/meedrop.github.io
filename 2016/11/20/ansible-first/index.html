@@ -84,19 +84,19 @@
 
 
 
-<meta name="description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！。ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta name="description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用Ansible来做自动化(一)：开始第一个Ansible例子">
 <meta property="og:url" content="http://yoursite.com/2016/11/20/ansible-first/index.html">
 <meta property="og:site_name" content="meedrop">
-<meta property="og:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！。ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta property="og:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-command.png">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-vvv.png">
-<meta property="og:updated_time" content="2016-11-20T07:26:15.573Z">
+<meta property="og:updated_time" content="2016-11-20T07:57:40.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用Ansible来做自动化(一)：开始第一个Ansible例子">
-<meta name="twitter:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！。ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta name="twitter:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 <meta name="twitter:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
 
 
@@ -347,7 +347,7 @@
       
 
       
-        <p>系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会<code>乱！</code>。<code>ansible</code>很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。<br><a id="more"></a></p>
+        <p>系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会<code>乱</code>！<code>ansible</code>很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。<br><a id="more"></a></p>
 <h2 id="1-为什么选择Ansible"><a href="#1-为什么选择Ansible" class="headerlink" title="1. 为什么选择Ansible"></a>1. 为什么选择Ansible</h2><p><code>ansible</code>定位为一个<code>配置管理工具</code>，和<code>puppet</code>,<code>saltstack</code>是同类型的工具，关于这三个工具的对比，已经有很多文章描述了，自行谷歌一下，至于我选择ansible的原因，只有以下这一点：</p>
 <blockquote>
 <p>简单</p>
