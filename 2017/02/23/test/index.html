@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="ansible," />
 
 
 
@@ -84,15 +84,16 @@
 
 
 
-<meta name="description" content="一叶落，而知天下秋">
-<meta property="og:type" content="website">
-<meta property="og:title" content="meedrop">
-<meta property="og:url" content="http://yoursite.com/categories/vpn/index.html">
+<meta name="description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Ansible来做自动化(二)：简单得不得了的playbook">
+<meta property="og:url" content="http://yoursite.com/2017/02/23/test/index.html">
 <meta property="og:site_name" content="meedrop">
-<meta property="og:description" content="一叶落，而知天下秋">
+<meta property="og:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
+<meta property="og:updated_time" content="2017-02-23T14:04:53.933Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="meedrop">
-<meta name="twitter:description" content="一叶落，而知天下秋">
+<meta name="twitter:title" content="用Ansible来做自动化(二)：简单得不得了的playbook">
+<meta name="twitter:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 
 
 
@@ -113,10 +114,10 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/vpn/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/02/23/test/"/>
 
 
-  <title> 分类: vpn | meedrop </title>
+  <title> 用Ansible来做自动化(二)：简单得不得了的playbook | meedrop </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -147,7 +148,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -255,47 +256,152 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        vpn
-        <small>分类</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                用Ansible来做自动化(二)：简单得不得了的playbook
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-23T15:13:01+08:00" content="2017-02-23">
+              2017-02-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ansible/" itemprop="url" rel="index">
+                    <span itemprop="name">ansible</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/23/test/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/23/test/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
+      
+        <p>系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会<code>乱</code>！<code>ansible</code>很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。<br><a id="more"></a></p>
+<h1 id="为什么选择Ansible"><a href="#为什么选择Ansible" class="headerlink" title="为什么选择Ansible"></a>为什么选择Ansible</h1><p><code>ansible</code>定位为一个<code>配置管理工具</code>，和<code>puppet</code>,<code>saltstack</code>是同类型的工具，关于这三个工具的对比，已经有很多文章描述了，自行谷歌一下，至于我选择ansible的原因，只有以下这一点：</p>
+<blockquote>
+<p>简单</p>
+</blockquote>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2016/10/30/setup-shadowsocks/" itemprop="url">
-              
-                <span itemprop="name">搭建一个快速稳定的Shadowsocks</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-30T20:27:50+08:00"
-              content="2016-10-30" >
-          10-30
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ansible/" rel="tag">#ansible</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/20/ansible-first/" rel="next" title="用Ansible来做自动化(一)：第一个Ansible例子">
+                <i class="fa fa-chevron-left"></i> 用Ansible来做自动化(一)：第一个Ansible例子
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </section>
 
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -303,6 +409,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/23/test/"
+           data-title="用Ansible来做自动化(二)：简单得不得了的playbook" data-url="http://yoursite.com/2017/02/23/test/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -322,8 +436,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -384,6 +507,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么选择Ansible"><span class="nav-number">1.</span> <span class="nav-text">为什么选择Ansible</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -480,6 +614,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
 
   
 
