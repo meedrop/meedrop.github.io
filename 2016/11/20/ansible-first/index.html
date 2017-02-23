@@ -86,16 +86,16 @@
 
 <meta name="description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用Ansible来做自动化(一)：开始第一个Ansible例子">
+<meta property="og:title" content="用Ansible来做自动化(一)：第一个Ansible例子">
 <meta property="og:url" content="http://yoursite.com/2016/11/20/ansible-first/index.html">
 <meta property="og:site_name" content="meedrop">
 <meta property="og:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-command.png">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-vvv.png">
-<meta property="og:updated_time" content="2016-11-20T07:57:40.090Z">
+<meta property="og:updated_time" content="2017-02-23T13:30:40.344Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用Ansible来做自动化(一)：开始第一个Ansible例子">
+<meta name="twitter:title" content="用Ansible来做自动化(一)：第一个Ansible例子">
 <meta name="twitter:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
 <meta name="twitter:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
 
@@ -121,7 +121,7 @@
   <link rel="canonical" href="http://yoursite.com/2016/11/20/ansible-first/"/>
 
 
-  <title> 用Ansible来做自动化(一)：开始第一个Ansible例子 | meedrop </title>
+  <title> 用Ansible来做自动化(一)：第一个Ansible例子 | meedrop </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -281,7 +281,7 @@
             
             
               
-                用Ansible来做自动化(一)：开始第一个Ansible例子
+                用Ansible来做自动化(一)：第一个Ansible例子
               
             
           </h1>
@@ -348,12 +348,12 @@
 
       
         <p>系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会<code>乱</code>！<code>ansible</code>很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。<br><a id="more"></a></p>
-<h2 id="1-为什么选择Ansible"><a href="#1-为什么选择Ansible" class="headerlink" title="1. 为什么选择Ansible"></a>1. 为什么选择Ansible</h2><p><code>ansible</code>定位为一个<code>配置管理工具</code>，和<code>puppet</code>,<code>saltstack</code>是同类型的工具，关于这三个工具的对比，已经有很多文章描述了，自行谷歌一下，至于我选择ansible的原因，只有以下这一点：</p>
+<h1 id="1-为什么选择Ansible"><a href="#1-为什么选择Ansible" class="headerlink" title="1. 为什么选择Ansible"></a>1. 为什么选择Ansible</h1><p><code>ansible</code>定位为一个<code>配置管理工具</code>，和<code>puppet</code>,<code>saltstack</code>是同类型的工具，关于这三个工具的对比，已经有很多文章描述了，自行谷歌一下，至于我选择ansible的原因，只有以下这一点：</p>
 <blockquote>
 <p>简单</p>
 </blockquote>
 <p>如果你的服务器规模没有特别大（小于500台），那么ansible绝对是你最好的选择！</p>
-<h2 id="2-幂等性"><a href="#2-幂等性" class="headerlink" title="2. 幂等性"></a>2. 幂等性</h2><p>开始往下写ansible之前，要讲一个很重要的东西：<code>幂等性</code>。贴一下百科对幂等性的解释：</p>
+<h1 id="2-幂等性"><a href="#2-幂等性" class="headerlink" title="2. 幂等性"></a>2. 幂等性</h1><p>开始往下写ansible之前，要讲一个很重要的东西：<code>幂等性</code>。贴一下百科对幂等性的解释：</p>
 <blockquote>
 <p>在编程中，一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。</p>
 </blockquote>
@@ -364,8 +364,8 @@
 <p>简单解析一下上面命令的意思，如果看不懂没关系^_^，下文会继续深入讨论ansible的使用<br><code>host</code>: 这是指定你要执行的主机<br><code>-m</code>: module模块的意思，指定要使用什么模块<br><code>lineinfile</code>: 一个ansible内置模块，看字面上的意思就是一个实现文本操作模块<br><code>-a</code>: 就是args，指定模块要使用的参数<br><code>dest</code>： lineinfile模块的参数，指定要远程文件是什么<br><code>line</code>:  lineinfile模块的参数，行操作，我的例子里是添加行</p>
 </blockquote>
 <p>这个命令无论执行多少次，/etc/hosts/里面永远只有一条解析。是不是很方便呢^_^</p>
-<h2 id="3-选择Ansible的版本"><a href="#3-选择Ansible的版本" class="headerlink" title="3. 选择Ansible的版本"></a>3. 选择Ansible的版本</h2><p>现在<code>ansible</code>的主流版本主要有<code>1.x</code>和<code>2.x</code>版本，选择哪个版本都ok，不过我的建议是直接上2.x的版本吧，我用1.x版本遇到了一些莫名其妙的坑，无论如何都解决不了，最终升级2.x才解决了问题。<br>另外有一点要注意的是：ansible 2.x 版本命令模式执行速度慢，比起1.x要慢很多，不过这是正常的，一开始我一直以为是自己安装出了问题，排查了好久才找到答案。<br>相对的，虽然命令执行速度慢了，但2.x跑playbook要比1.x快很多。</p>
-<h2 id="4-开始第一个Ansible例子"><a href="#4-开始第一个Ansible例子" class="headerlink" title="4. 开始第一个Ansible例子"></a>4. 开始第一个Ansible例子</h2><h3 id="4-1-Ansible原理及实验拓扑"><a href="#4-1-Ansible原理及实验拓扑" class="headerlink" title="4.1. Ansible原理及实验拓扑"></a>4.1. Ansible原理及实验拓扑</h3><p>ansible的原理非常简单：<code>通过ssh登录到(1台或多台)远程主机执行命令</code><br>接下来会基于下图拓扑，开始讲解ansible的例子<br><img src="http://ofus5xwey.bkt.clouddn.com/ansible1.png" alt=" "></p>
+<h1 id="3-选择Ansible的版本"><a href="#3-选择Ansible的版本" class="headerlink" title="3. 选择Ansible的版本"></a>3. 选择Ansible的版本</h1><p>现在<code>ansible</code>的主流版本主要有<code>1.x</code>和<code>2.x</code>版本，选择哪个版本都ok，不过我的建议是直接上2.x的版本吧，我用1.x版本遇到了一些莫名其妙的坑，无论如何都解决不了，最终升级2.x才解决了问题。<br>另外有一点要注意的是：ansible 2.x 版本命令模式执行速度慢，比起1.x要慢很多，不过这是正常的，一开始我一直以为是自己安装出了问题，排查了好久才找到答案。<br>相对的，虽然命令执行速度慢了，但2.x跑playbook要比1.x快很多。</p>
+<h1 id="4-开始第一个Ansible例子"><a href="#4-开始第一个Ansible例子" class="headerlink" title="4. 开始第一个Ansible例子"></a>4. 开始第一个Ansible例子</h1><h2 id="4-1-Ansible原理及实验拓扑"><a href="#4-1-Ansible原理及实验拓扑" class="headerlink" title="4.1. Ansible原理及实验拓扑"></a>4.1. Ansible原理及实验拓扑</h2><p>ansible的原理非常简单：<code>通过ssh登录到(1台或多台)远程主机执行命令</code><br>接下来会基于下图拓扑，开始讲解ansible的例子<br><img src="http://ofus5xwey.bkt.clouddn.com/ansible1.png" alt=" "></p>
 <p>主机列表：<code>下面我只列出了被管理主机列表，ansbile管理主机的信息暂时使用不到，不列出混淆</code></p>
 <table>
 <thead>
@@ -391,7 +391,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="4-2-安装Ansible"><a href="#4-2-安装Ansible" class="headerlink" title="4.2. 安装Ansible"></a>4.2. 安装Ansible</h3><p>安装基于centos6系统，如果你不是和我一样的系统，可以参考一下官方的安装文档：<br><a href="http://docs.ansible.com/ansible/intro_installation.html" target="_blank" rel="external">ansible官方文档</a><br><a href="http://ansible-tran.readthedocs.io/en/latest/docs/intro_installation.html" target="_blank" rel="external">ansible中文翻译文档</a></p>
+<h2 id="4-2-安装Ansible"><a href="#4-2-安装Ansible" class="headerlink" title="4.2. 安装Ansible"></a>4.2. 安装Ansible</h2><p>安装基于centos6系统，如果你不是和我一样的系统，可以参考一下官方的安装文档：<br><a href="http://docs.ansible.com/ansible/intro_installation.html" target="_blank" rel="external">ansible官方文档</a><br><a href="http://ansible-tran.readthedocs.io/en/latest/docs/intro_installation.html" target="_blank" rel="external">ansible中文翻译文档</a></p>
 <ul>
 <li><p>添加阿里云的镜像源</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget http://mirrors.aliyun.com/epel/epel-release-latest<span class="number">-6.</span>noarch.rpm</div><div class="line">rpm -ivh epel-release-latest<span class="number">-6.</span>noarch.rpm</div></pre></td></tr></table></figure>
@@ -403,7 +403,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ansible --version</div><div class="line"><span class="comment"># 像这样的返回就是安装成功了</span></div><div class="line">ansible <span class="number">2.1</span><span class="number">.2</span><span class="number">.0</span></div><div class="line">  config file = /etc/ansible/ansible.cfg</div><div class="line">  configured module search path = Default w/o overrides</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="4-3-执行第一条ansible命令吧"><a href="#4-3-执行第一条ansible命令吧" class="headerlink" title="4.3. 执行第一条ansible命令吧"></a>4.3. 执行第一条ansible命令吧</h3><ul>
+<h2 id="4-3-执行第一条ansible命令吧"><a href="#4-3-执行第一条ansible命令吧" class="headerlink" title="4.3. 执行第一条ansible命令吧"></a>4.3. 执行第一条ansible命令吧</h2><ul>
 <li><p>首先什么都不要管，创建一个实验目录<code>/tmp/ansible</code>，在里面开始我们第一个实验：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir /tmp/ansible</div></pre></td></tr></table></figure>
 </li>
@@ -428,7 +428,7 @@
 <li>除了上面的命令，你还可以这么做，例如对单台主机操作，试试下面的命令会有什么结果吧^_^<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ansible -i MyRemoteHosts foo1 -u bar -m shell -a <span class="string">"date"</span> -k</div><div class="line">ansible -i MyRemoteHosts foo2 -u bar -m shell -a <span class="string">"date"</span> -k</div><div class="line">ansible -i MyRemoteHosts foo1,foo2 -u bar -m shell -a <span class="string">"date"</span> -k</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h2><p>上文中我没有提及<code>inventory</code>，因为我觉得这个叫法会让人觉得难以理解，其实inventory非常简单，它就等价于上文中的host文件<code>MyRemoteHosts</code>。</p>
+<h1 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h1><p>上文中我没有提及<code>inventory</code>，因为我觉得这个叫法会让人觉得难以理解，其实inventory非常简单，它就等价于上文中的host文件<code>MyRemoteHosts</code>。</p>
 <p>还有模块的使用方法，这篇文章里不会写，我觉得那并不是ansible的重点，可以参考这篇文档：<a href="http://http://breezey.blog.51cto.com/2400275/1555530/" target="_blank" rel="external">http://http://breezey.blog.51cto.com/2400275/1555530/</a><br>或者通过<code>ansible-doc 模块名</code>，英文能力好我建议第二种方法。</p>
 <p>会不会觉得ansible的命令会有点长^_^？其实很多的变量可以事先定义好，不过我想让你从底层更清晰的了解ansible的运作方式，稍微弄的复杂了点。简化后的ansible命令可能像这样子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible foo -u bar -m shell -a <span class="string">"date"</span></div></pre></td></tr></table></figure></p>
 <ul>
@@ -501,7 +501,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/11/20/ansible-first/"
-           data-title="用Ansible来做自动化(一)：开始第一个Ansible例子" data-url="http://yoursite.com/2016/11/20/ansible-first/">
+           data-title="用Ansible来做自动化(一)：第一个Ansible例子" data-url="http://yoursite.com/2016/11/20/ansible-first/">
       </div>
     
   </div>
@@ -603,7 +603,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-为什么选择Ansible"><span class="nav-number">1.</span> <span class="nav-text">1. 为什么选择Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-幂等性"><span class="nav-number">2.</span> <span class="nav-text">2. 幂等性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-选择Ansible的版本"><span class="nav-number">3.</span> <span class="nav-text">3. 选择Ansible的版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-开始第一个Ansible例子"><span class="nav-number">4.</span> <span class="nav-text">4. 开始第一个Ansible例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-Ansible原理及实验拓扑"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. Ansible原理及实验拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-安装Ansible"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. 安装Ansible</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-执行第一条ansible命令吧"><span class="nav-number">4.3.</span> <span class="nav-text">4.3. 执行第一条ansible命令吧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-小结"><span class="nav-number">5.</span> <span class="nav-text">5. 小结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-为什么选择Ansible"><span class="nav-number">1.</span> <span class="nav-text">1. 为什么选择Ansible</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-幂等性"><span class="nav-number">2.</span> <span class="nav-text">2. 幂等性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-选择Ansible的版本"><span class="nav-number">3.</span> <span class="nav-text">3. 选择Ansible的版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-开始第一个Ansible例子"><span class="nav-number">4.</span> <span class="nav-text">4. 开始第一个Ansible例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Ansible原理及实验拓扑"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. Ansible原理及实验拓扑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-安装Ansible"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. 安装Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-执行第一条ansible命令吧"><span class="nav-number">4.3.</span> <span class="nav-text">4.3. 执行第一条ansible命令吧</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-小结"><span class="nav-number">5.</span> <span class="nav-text">5. 小结</span></a></li></ol></div>
             
           </div>
         </section>
@@ -621,8 +621,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
