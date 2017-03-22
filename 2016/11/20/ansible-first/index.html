@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible1.png">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-command.png">
 <meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/ansible-first-vvv.png">
-<meta property="og:updated_time" content="2017-03-11T08:10:15.596Z">
+<meta property="og:updated_time" content="2017-03-22T14:14:38.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用Ansible来做自动化(一)：第一个Ansible例子">
 <meta name="twitter:description" content="系统管理工作经常有很多重复性工作，通过脚本可以提升效率。但换一个环境脚本可能就不适用了，需要进行修改，久而久之，各种脚本各种环境，就会乱！ansible很轻松的解决了上述的问题，同时在使用ansible之后，我发现ansible还能实现其他很棒的功能，有一种感觉“遇到ansible真是太棒了！”，所以，费劲我的洪荒之力也要把ansible带给你。">
@@ -429,7 +429,7 @@
 </li>
 </ul>
 <h1 id="5-小结"><a href="#5-小结" class="headerlink" title="5. 小结"></a>5. 小结</h1><p>上文中我没有提及<code>inventory</code>，因为我觉得这个叫法会让人觉得难以理解，其实inventory非常简单，它就等价于上文中的host文件<code>MyRemoteHosts</code>。</p>
-<p>还有模块的使用方法，这篇文章里不会写，我觉得那并不是ansible的重点，可以参考这篇文档：<a href="http://http://breezey.blog.51cto.com/2400275/1555530/" target="_blank" rel="external">http://http://breezey.blog.51cto.com/2400275/1555530/</a><br>或者通过<code>ansible-doc 模块名</code>，英文能力好我建议第二种方法。</p>
+<p>还有模块的使用方法，这篇文章里不会写，我觉得那并不是ansible的重点，可以参考这篇文档：<a href="http://breezey.blog.51cto.com/2400275/1555530/" target="_blank" rel="external">http://breezey.blog.51cto.com/2400275/1555530/</a><br>或者通过<code>ansible-doc 模块名</code>，英文能力好我建议第二种方法。</p>
 <p>会不会觉得ansible的命令会有点长^_^？其实很多的变量可以事先定义好，不过我想让你从底层更清晰的了解ansible的运作方式，稍微弄的复杂了点。简化后的ansible命令可能像这样子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible foo -u bar -m shell -a <span class="string">"date"</span></div></pre></td></tr></table></figure></p>
 <ul>
 <li><code>host</code>文件默认会读<code>/etc/ansible/hosts</code>，解析预先在<code>/etc/hosts</code>里做好</li>
@@ -550,7 +550,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -558,7 +558,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -567,7 +567,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

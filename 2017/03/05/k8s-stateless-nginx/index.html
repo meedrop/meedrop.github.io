@@ -1,0 +1,740 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="kubernetes/k8s," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="上一篇文章: 从头开始搭建一个kubernetes/k8s集群 介绍了kubernetes集群的安装方法，基于上文的环境，通过kubernetes快速部署一个nginx集群，对集群的动态伸缩试验，同时在这个过程中了解kubectl相关命令的使用方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用kubernetes/k8s部署无状态nginx集群">
+<meta property="og:url" content="http://yoursite.com/2017/03/05/k8s-stateless-nginx/index.html">
+<meta property="og:site_name" content="meedrop">
+<meta property="og:description" content="上一篇文章: 从头开始搭建一个kubernetes/k8s集群 介绍了kubernetes集群的安装方法，基于上文的环境，通过kubernetes快速部署一个nginx集群，对集群的动态伸缩试验，同时在这个过程中了解kubectl相关命令的使用方法">
+<meta property="og:image" content="http://ofus5xwey.bkt.clouddn.com/k8s-f2-1.png">
+<meta property="og:updated_time" content="2017-03-22T14:19:04.540Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用kubernetes/k8s部署无状态nginx集群">
+<meta name="twitter:description" content="上一篇文章: 从头开始搭建一个kubernetes/k8s集群 介绍了kubernetes集群的安装方法，基于上文的环境，通过kubernetes快速部署一个nginx集群，对集群的动态伸缩试验，同时在这个过程中了解kubectl相关命令的使用方法">
+<meta name="twitter:image" content="http://ofus5xwey.bkt.clouddn.com/k8s-f2-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/05/k8s-stateless-nginx/"/>
+
+
+  <title> 使用kubernetes/k8s部署无状态nginx集群 | meedrop </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?27c6eb5bab0f7bb4b03be960b7e141b1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">meedrop</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-search">
+          <a href="/search" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-search"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用kubernetes/k8s部署无状态nginx集群
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-05T20:21:03+08:00" content="2017-03-05">
+              2017-03-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/05/k8s-stateless-nginx/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/05/k8s-stateless-nginx/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇文章: <a href="/2017/03/02/k8s-install/" title="从头开始搭建一个kubernetes/k8s集群">从头开始搭建一个kubernetes/k8s集群</a> 介绍了kubernetes集群的安装方法，基于上文的环境，通过kubernetes快速部署一个nginx集群，对集群的动态伸缩试验，同时在这个过程中了解<code>kubectl</code>相关命令的使用方法<br><a id="more"></a></p>
+<blockquote>
+<p><em>tips: 本文环境使用<code>CentOS7</code>系统，在开始实战前，请记得善用<code>journalctl</code>日志来进行排错</em></p>
+</blockquote>
+<h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1. 环境准备"></a>1. 环境准备</h2><p>这里的环境和上一篇文章一致，再贴一下相关的信息<br>使用三台<code>CentOS7</code>服务器，1台<code>Master</code>，2台<code>Node</code>，组成一个kubernetes集群<br>kubernetes版本:<code>1.5</code></p>
+<p><img src="http://ofus5xwey.bkt.clouddn.com/k8s-f2-1.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">centos-master = 192.168.65.51</div><div class="line">centos-minion-1 = 192.168.65.52</div><div class="line">centos-minion-2 = 192.168.65.53</div></pre></td></tr></table></figure>
+<h2 id="2-部署"><a href="#2-部署" class="headerlink" title="2. 部署"></a>2. 部署</h2><p><em>以下部署的操作都在Master进行</em></p>
+<ul>
+<li>创建部署YAML文件<br>部署可以通过kubectl命令行来创建，也可以写好一个yaml文件然后来部署，我们采取第二种方式。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># vim nginx_deploy.yaml</div><div class="line"></div><div class="line">apiVersion: extensions/v1beta1</div><div class="line">kind: Deployment</div><div class="line">metadata:</div><div class="line">  name: nginx-deployment # 这是部署的名称，必须唯一</div><div class="line">spec:</div><div class="line">  replicas: 2 # 设定部署跑2个pods，pods符合template策略</div><div class="line">  template:</div><div class="line">    metadata:</div><div class="line">      labels:</div><div class="line">        app: nginx  # 设定label的名称为 app=nginx</div><div class="line">    spec:</div><div class="line">      containers:</div><div class="line">      - name: nginx</div><div class="line">        image: nginx:1.7.9  # 选择1.7.9的nginx镜像</div><div class="line">        ports:</div><div class="line">        - containerPort: 80</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>默认的镜像是从docker hub拉取的，可能速度会比较慢，建议修改为镜像加速地址</p>
+</blockquote>
+<ul>
+<li><p>应用配置文件并部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># kubectl create -f nginx_deploy.yaml</div><div class="line"></div><div class="line">deployment &quot;nginx-deployment&quot; created</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看创建进度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># kubectl rollout status deployment/nginx-deployment</div><div class="line"></div><div class="line">Waiting for rollout to finish: 0 of 2 updated replicas are available...</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看创建信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># kubectl describe deployment nginx-deployment</div><div class="line"></div><div class="line">下面是一个创建成功后正常的状态，如果有异常，请查看journalctl日志来排查</div><div class="line">Name:			nginx-deployment</div><div class="line">Namespace:		default</div><div class="line">CreationTimestamp:	Mon, 20 Mar 2017 17:54:12 +0800</div><div class="line">Labels:			app=nginx  # 这是label名称</div><div class="line">Selector:		app=nginx</div><div class="line">Replicas:		2 updated | 2 total | 2 available | 0 unavailable</div><div class="line">StrategyType:		RollingUpdate</div><div class="line">MinReadySeconds:	0</div><div class="line">RollingUpdateStrategy:	1 max unavailable, 1 max surge</div><div class="line">Conditions:</div><div class="line">  Type		Status	Reason</div><div class="line">  ----		------	------</div><div class="line">  Available 	True	MinimumReplicasAvailable</div><div class="line">OldReplicaSets:	&lt;none&gt;</div><div class="line">NewReplicaSet:	nginx-deployment-4087004473 (2/2 replicas created)</div><div class="line">No events.</div></pre></td></tr></table></figure>
+</li>
+<li><p>获取部署信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># kubectl get deployments</div><div class="line"></div><div class="line">NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</div><div class="line">nginx-deployment   2         2         2            0           6m</div><div class="line"></div><div class="line">过一段时间，查看到2个AVAILABLE就OK了，这个过程子节点在pull 镜像</div><div class="line">NAME               DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</div><div class="line">nginx-deployment   2         2         2            2           15h</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看Node节点的docker信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@Node1 ~]# docker images -a</div><div class="line">REPOSITORY                                            TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">registry.access.redhat.com/rhel7/pod-infrastructure   latest              34d3450d733b        7 weeks ago         205 MB</div><div class="line">docker.io/nginx                                       1.7.9               84581e99d807        2 years ago         91.64 MB</div><div class="line"></div><div class="line">[root@Node2 ~]# docker images -a</div><div class="line">REPOSITORY                                            TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">registry.access.redhat.com/rhel7/pod-infrastructure   latest              34d3450d733b        7 weeks ago         205 MB</div><div class="line">docker.io/nginx                                       1.7.9               84581e99d807        2 years ago         91.64 MB</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在kubernetes-node的节点上都会有这样的一个基础镜像， registry.access.redhat.com/rhel7/pod-infrastructure:latest 这个镜像是Pod 启动时的一个基础容器，你可以通过dokcer ps -a命令看到这个容器，类似windows系统服务,供kubenetes内部使用。</p>
+<ul>
+<li><p>查看跑起来的pods</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># kubectl get pods -l app=nginx</div><div class="line"></div><div class="line">NAME                                READY     STATUS    RESTARTS   AGE</div><div class="line">nginx-deployment-4087004473-db886   1/1       Running   0          16h</div><div class="line">nginx-deployment-4087004473-fdtcr   1/1       Running   0          16h</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看pod的详细信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">#  kubectl describe pod nginx-deployment-4087004473-db886</div><div class="line"></div><div class="line">Name:		nginx-deployment-4087004473-db886</div><div class="line">Namespace:	default</div><div class="line">Node:		centos-minion-1/192.168.65.52</div><div class="line">Start Time:	Mon, 20 Mar 2017 17:59:41 +0800</div><div class="line">Labels:		app=nginx</div><div class="line">		pod-template-hash=4087004473</div><div class="line">Status:		Running</div><div class="line">IP:		172.30.96.2</div><div class="line">Controllers:	ReplicaSet/nginx-deployment-4087004473</div><div class="line">Containers:</div><div class="line">  nginx:</div><div class="line">    Container ID:		docker://61d8fd0934f482187523e2004629b95f181a2c65e38d3b6e0266750aed962852</div><div class="line">    Image:			nginx:1.7.9</div><div class="line">    Image ID:			docker-pullable://docker.io/nginx@sha256:e3456c851a152494c3e4ff5fcc26f240206abac0c9d794affb40e0714846c451</div><div class="line">    Port:			80/TCP</div><div class="line">    State:			Running</div><div class="line">      Started:			Mon, 20 Mar 2017 18:18:11 +0800</div><div class="line">    Ready:			True</div><div class="line">    Restart Count:		0</div><div class="line">    Volume Mounts:		&lt;none&gt;</div><div class="line">    Environment Variables:	&lt;none&gt;</div><div class="line">Conditions:</div><div class="line">  Type		Status</div><div class="line">  Initialized 	True </div><div class="line">  Ready 	True </div><div class="line">  PodScheduled 	True </div><div class="line">No volumes.</div><div class="line">QoS Class:	BestEffort</div><div class="line">Tolerations:	&lt;none&gt;</div><div class="line">No events.</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-更新容器应用程序版本"><a href="#3-更新容器应用程序版本" class="headerlink" title="3. 更新容器应用程序版本"></a>3. 更新容器应用程序版本</h2><ul>
+<li><p>写一个更新的yaml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># vim nginx_deploy-update.yaml</div><div class="line"></div><div class="line">apiVersion: extensions/v1beta1</div><div class="line">kind: Deployment</div><div class="line">metadata:</div><div class="line">  name: nginx-deployment</div><div class="line">spec:</div><div class="line">  replicas: 2 </div><div class="line">  template:</div><div class="line">    metadata:</div><div class="line">      labels:</div><div class="line">        app: nginx</div><div class="line">    spec:</div><div class="line">      containers:</div><div class="line">      - name: nginx</div><div class="line">        image: nginx:1.8 # 更新nginx的版本从1.7.9到1.8</div><div class="line">        ports:</div><div class="line">        - containerPort: 80</div></pre></td></tr></table></figure>
+</li>
+<li><p>应用提交</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># kubectl apply -f nginx_deploy-update.yaml</div><div class="line"></div><div class="line">deployment &quot;nginx-deployment&quot; configured</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看升级的状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">NAME                                READY     STATUS              RESTARTS   AGE</div><div class="line">nginx-deployment-148880595-j9jzh    0/1       ContainerCreating   0          33s</div><div class="line">nginx-deployment-148880595-k2jfz    0/1       ContainerCreating   0          33s</div><div class="line">nginx-deployment-4087004473-fdtcr   1/1       Running             0          16h</div><div class="line"></div><div class="line">截取了几个个状态</div><div class="line">[root@centos-master k8s]# kubectl get pods -l app=nginx</div><div class="line">NAME                                READY     STATUS              RESTARTS   AGE</div><div class="line">nginx-deployment-148880595-j9jzh    0/1       ContainerCreating   0          1m</div><div class="line">nginx-deployment-148880595-k2jfz    1/1       Running             0          1m</div><div class="line">nginx-deployment-4087004473-fdtcr   1/1       Terminating         0          16h</div><div class="line"></div><div class="line">最后升级成功了</div><div class="line">[root@centos-master k8s]# kubectl get pods -l app=nginx</div><div class="line">NAME                               READY     STATUS    RESTARTS   AGE</div><div class="line">nginx-deployment-148880595-j9jzh   1/1       Running   0          1m</div><div class="line">nginx-deployment-148880595-k2jfz   1/1       Running   0          1m</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以看到升级的方式确实是做到零停机的</p>
+<ul>
+<li>看详细pod状态，已经升级到1.8了<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># kubectl describe pod nginx-deployment-148880595-j9jzh</div><div class="line"></div><div class="line">Name:		nginx-deployment-148880595-j9jzh</div><div class="line">Namespace:	default</div><div class="line">Node:		centos-minion-2/192.168.65.53</div><div class="line">Start Time:	Tue, 21 Mar 2017 10:15:00 +0800</div><div class="line">Labels:		app=nginx</div><div class="line">		pod-template-hash=148880595</div><div class="line">Status:		Running</div><div class="line">IP:		172.30.70.3</div><div class="line">Controllers:	ReplicaSet/nginx-deployment-148880595</div><div class="line">Containers:</div><div class="line">  nginx:</div><div class="line">    Container ID:		docker://69c4d3e7ea2c3204b2b9ac1ee02a97516087a84753bd1362f07482995b6e9b7c</div><div class="line">    Image:			nginx:1.8</div><div class="line">    Image ID:			docker-pullable://docker.io/nginx@sha256:c97ee70c4048fe79765f7c2ec0931957c2898f47400128f4f3640d0ae5d60d10</div><div class="line">    Port:			80/TCP</div><div class="line">    State:			Running</div><div class="line">      Started:			Tue, 21 Mar 2017 10:16:18 +0800</div><div class="line">    Ready:			True</div><div class="line">    Restart Count:		0</div><div class="line">    Volume Mounts:		&lt;none&gt;</div><div class="line">    Environment Variables:	&lt;none&gt;</div><div class="line">Conditions:</div><div class="line">  Type		Status</div><div class="line">  Initialized 	True </div><div class="line">  Ready 	True </div><div class="line">  PodScheduled 	True </div><div class="line">No volumes.</div><div class="line">QoS Class:	BestEffort</div><div class="line">Tolerations:	&lt;none&gt;</div><div class="line">Events:</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4-调整副本的数量"><a href="#4-调整副本的数量" class="headerlink" title="4. 调整副本的数量"></a>4. 调整副本的数量</h2><ul>
+<li><p>写一个调整的yaml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># vim nginx_deploy-scale.yaml</div><div class="line"></div><div class="line">apiVersion: extensions/v1beta1</div><div class="line">kind: Deployment</div><div class="line">metadata:</div><div class="line">  name: nginx-deployment</div><div class="line">spec:</div><div class="line">  replicas: 4 # 调整副本数量从2到4份 </div><div class="line">  template:</div><div class="line">    metadata:</div><div class="line">      labels:</div><div class="line">        app: nginx</div><div class="line">    spec:</div><div class="line">      containers:</div><div class="line">      - name: nginx</div><div class="line">        image: nginx:1.8 </div><div class="line">        ports:</div><div class="line">        - containerPort: 80</div></pre></td></tr></table></figure>
+</li>
+<li><p>应用变更</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># kubectl apply -f nginx_deploy-scale.yaml</div><div class="line"></div><div class="line">deployment &quot;nginx-deployment&quot; configured</div></pre></td></tr></table></figure>
+</li>
+<li><p>查看调整后的状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># kubectl get pods -l app=nginx</div><div class="line"></div><div class="line">NAME                               READY     STATUS    RESTARTS   AGE</div><div class="line">nginx-deployment-148880595-cdjh6   1/1       Running   0          4s</div><div class="line">nginx-deployment-148880595-j9jzh   1/1       Running   0          20m</div><div class="line">nginx-deployment-148880595-k2jfz   1/1       Running   0          20m</div><div class="line">nginx-deployment-148880595-wvpf3   1/1       Running   0          4s</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="5-错误勘察"><a href="#5-错误勘察" class="headerlink" title="5. 错误勘察"></a>5. 错误勘察</h2><p>在部署的过程遇到了一些问题，主要是从日志中找出来的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">flanneld-start[50970]: E0320 13:59:22.992305   50970 network.go:102] failed to retrieve network config: 100: Key not found (/atomic.io)</div><div class="line"></div><div class="line">解决方案: /etc/sysconfig/flanneld的配置文件中etd的路径必须正确</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Sync &quot;default/nginxtest-deployment-591249638&quot; failed with unable to create pods: No API token found</div><div class="line"></div><div class="line">解决方案: Master和Node要设置好相应token</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">event.go:217] Event(api.ObjectReference&#123;Kind:&quot;ReplicaSet&quot;, Namespace:&quot;default&quot;, Name:&quot;nginx-deployment-4087004473&quot;, UID:&quot;b3d3bc42-0d51-11e7-907b-000c29b1fc9a&quot;, APIVersion:&quot;extensions&quot;, ResourceVersion:&quot;742854&quot;, FieldPath:&quot;&quot;&#125;): type: &apos;Warning&apos; reason: &apos;FailedCreate&apos; Error creating: No API token found for service account &quot;default&quot;, retry after the token is automatically created and added to the service account</div><div class="line"></div><div class="line">解决方案:  </div><div class="line">注释掉 /etc/kubernetes/apiserver文件中的KUBE_ADMISSION_CONTROL开头行</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/kubernetes-k8s/" rel="tag">#kubernetes/k8s</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/02/k8s-install/" rel="next" title="从头开始搭建一个kubernetes/k8s集群">
+                <i class="fa fa-chevron-left"></i> 从头开始搭建一个kubernetes/k8s集群
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/05/k8s-stateless-nginx/"
+           data-title="使用kubernetes/k8s部署无状态nginx集群" data-url="http://yoursite.com/2017/03/05/k8s-stateless-nginx/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="meedrop" />
+          <p class="site-author-name" itemprop="name">meedrop</p>
+          <p class="site-description motion-element" itemprop="description">一叶落，而知天下秋</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/iraindrop" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-环境准备"><span class="nav-text">1. 环境准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-部署"><span class="nav-text">2. 部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-更新容器应用程序版本"><span class="nav-text">3. 更新容器应用程序版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-调整副本的数量"><span class="nav-text">4. 调整副本的数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-错误勘察"><span class="nav-text">5. 错误勘察</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">meedrop</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"meedrop"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
